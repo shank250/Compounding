@@ -1,0 +1,267 @@
+:root {
+    --primary-color: #ffbb63;    /* Modern purple */
+    --secondary-color: #feaf4f;  /* Bright blue */
+    --accent-color: #fe6e00;     /* Cyan */
+    --background-color: #F8F9FD; /* Light background */
+    --text-color: #2D3436;       /* Dark text */
+    --canvas-border: #E6E9F0;    /* Light border */
+    --highlight-color: #FF6B6B;  /* Coral highlight */
+    --overlay-color: rgba(108, 99, 255, 0.05);
+    --success-color: #b83a00;    /* Mint */
+}
+
+body {
+    margin: 0;
+    font-family: 'Press Start 2P', 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, var(--background-color), #FFFFFF);
+    color: var(--text-color);
+    min-height: 100vh;
+}
+
+header {
+    background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(108, 99, 255, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+header h3 {
+    animation: float 3s ease-in-out infinite;
+    font-size: 1.8em;
+    margin: 0;
+    color: var(--text-color);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+nav {
+    margin: 15px 0;
+}
+
+nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: var(--link-color);
+}
+
+main {
+    padding: 20px;
+}
+
+#game-container {
+    display: flex;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+#canvas-area {
+    border: 1px solid var(--canvas-border);
+    border-radius: 15px;
+    min-height: 400px;
+    flex: 1;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 32px rgba(108, 99, 255, 0.1);
+    transition: border-color 0.3s ease;
+    
+    /* New styles for content positioning */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    line-height: 1.6;
+    font-size: 1.1rem;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 1s ease-out;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+#canvas-area:hover {
+    animation: glow 2s infinite;
+    border-color: var(--primary-color);
+    box-shadow: 0 12px 40px rgba(108, 99, 255, 0.15);
+}
+
+/* Add styles for canvas content */
+#canvas-content {
+    max-width: 600px;
+    margin: 0 auto;
+    animation: fadeIn 1.2s ease-out;
+}
+
+#gameCanvas {
+    display: grid;
+    gap: 1.5rem;
+    animation: fadeIn 0.8s ease-out;
+}
+
+#gameCanvas p {
+    background: linear-gradient(120deg, #FFFFFF, var(--background-color));
+    padding: 1.2rem;
+    border-radius: 10px;
+    margin: 0;
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--primary-color);
+    box-shadow: 0 4px 15px rgba(108, 99, 255, 0.05);
+}
+
+#gameCanvas p:hover {
+    transform: scale(1.02);
+    background: linear-gradient(120deg, #FFFFFF, #F0F2FD);
+    border-left: 4px solid var(--highlight-color);
+}
+
+#gameCanvas strong {
+    color: var(--primary-color);
+}
+
+#gameCanvas span {
+    color: var(--text-color);
+    font-weight: bold;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    background: linear-gradient(120deg, var(--background-color), #FFFFFF);
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 2px 8px rgba(108, 99, 255, 0.05);
+}
+
+#controls {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    min-width: 200px;
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--canvas-border);
+    background-clip: padding-box;
+    box-shadow: 0 8px 32px rgba(108, 99, 255, 0.1);
+}
+
+#controls button {
+    padding: 15px 25px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(108, 99, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+#controls button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2));
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+#controls button:hover::after {
+    transform: translateX(100%);
+}
+
+#controls button:hover {
+    background: linear-gradient(120deg, var(--secondary-color), var(--accent-color));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108, 99, 255, 0.3);
+}
+
+#controls button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+footer {
+    background: #FFFFFF;
+    border-top: 1px solid var(--canvas-border);
+    color: var(--text-color);
+    text-align: center;
+    padding: 15px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 -4px 20px rgba(108, 99, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+    #game-container {
+        flex-direction: column;
+    }
+    
+    #canvas-area {
+        min-height: 250px;
+        padding: 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    #controls {
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    #gameCanvas {
+        gap: 1rem;
+    }
+    
+    #gameCanvas p {
+        padding: 1rem;
+    }
+    
+    #gameCanvas p:hover {
+        transform: scale(1.01);
+    }
+}
+
+@media (max-width: 480px) {
+    #canvas-area {
+        padding: 1rem;
+        font-size: 0.8rem;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes glow {
+    0% { box-shadow: 0 4px 15px rgba(108, 99, 255, 0.1); }
+    50% { box-shadow: 0 4px 25px rgba(108, 99, 255, 0.2); }
+    100% { box-shadow: 0 4px 15px rgba(108, 99, 255, 0.1); }
+}
