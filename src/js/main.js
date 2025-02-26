@@ -1,11 +1,16 @@
+import  startExplaination  from './graph_creation.js';
+import { oneTImeInvestment, monthlyInvestment } from "./data.js";
+
 let winner = null;
-let oneTImeInvestment = [];
-let monthlyInvestment = [];
+
+
+document.getElementById('startGame').addEventListener('click', () => startGame());
 
 // Starts the game
 function startGame() {
     document.getElementById('canvas-content').textContent = 'A random scenario awaits—choose the strategy you believe grows wealth faster. Trust your gut, and if you miss, coffee\'s on you (or share the fun)! 🚀';
-    document.getElementById('controls').innerHTML = '<button onclick="generateCenario()">Generate Cenario</button>';
+    document.getElementById('controls').innerHTML = '<button id="generateCenario">Generate Cenario</button>';
+    document.getElementById('generateCenario').addEventListener('click', () => generateCenario());
 }
 
 // Generate random data (like principal amount, rate, time, etc.)
@@ -17,7 +22,7 @@ function generateRandomData(level = 0) {
     const oneTimeAmount = Math.floor(Math.random() * (maxAmount/minAmount - minAmount/minAmount) + minAmount/minAmount)*1_00_000;
 
     const oneTimeRate = Math.floor(Math.random() * (25 - 6) + 5);
-    const oneTimeYears = Math.floor(Math.random() * (80 - 5) + 5);
+    const oneTimeYears = Math.floor(Math.random() * (10 - 5) + 5);
 
     const monthlyAmount = Math.floor(Math.random() * (3000 - 1000) + 1000);
     let monthlyRate;  // Declare outside to avoid scope issues
@@ -53,11 +58,11 @@ function generateCenario() {
     // Inject data into the canvas content
     document.getElementById('canvas-content').innerHTML = `
         <div id="gameCanvas">
-            <div id="oneTimeInvestmentId">
+            <div class="investment-btn"  data-type='oneTime'>
                 <p>💰 <strong>One-Time Investment:</strong> You have <span id="oneTimeAmount">$${data.oneTimeAmount}</span> to invest upfront at <span id="oneTimeRate">${data.oneTimeRate}%</span> annual return for <span id="oneTimeYears">${data.oneTimeYears}</span> years.</p>
             </div>
 
-            <div id="monthlyInvestmentId">
+            <div class="investment-btn" data-type='monthly'>
                 <p>📈 <strong>Monthly Investment:</strong> You invest <span id="monthlyAmount">$${data.monthlyAmount}</span> every month at <span id="monthlyRate">${data.monthlyRate}%</span> annual return for <span id="monthlyYears">${data.monthlyYears}</span> years.</p>
             </div>
 
@@ -67,15 +72,28 @@ function generateCenario() {
  
 
     document.getElementById('controls').innerHTML = `
-        <button onclick="checkWinner(userInput='oneTime')">One-Time Investment</button> 
-        <button onclick="checkWinner(userInput = 'monthly')">Long-Term Investment</button>
-        <button onclick="generateCenario()">Change Question</button>
+        <button class="investment-btn" data-type='oneTime'>One-Time Investment</button> 
+        <button class="investment-btn" data-type='monthly'>Long-Term Investment</button>
+        <button class="generateCenario">Change Question</button>
     `;
 
+    console.log("event listener will be added");
     
-        // Adding checkWinner function to the canvas on click
-    document.getElementById('oneTimeInvestmentId').addEventListener('click', () => checkWinner(userInput = 'oneTime'));
-    document.getElementById('monthlyInvestmentId').addEventListener('click', () => checkWinner(userInput = 'monthly'));  
+    document.addEventListener('click', (event) => {
+    let investmentDiv = event.target.closest('.investment-btn');
+    if (investmentDiv) {
+        let investmentType = investmentDiv.getAttribute('data-type');
+        console.log("Investment type is: ", investmentType);
+        checkWinner(investmentType);
+    }
+
+    if (event.target.classList.contains('generateCenario')) {
+        generateCenario();
+    }
+});
+
+    console.log("event listener added");
+    
 }
 
 /*
@@ -85,15 +103,18 @@ Designed to check if the user has chosen the right strategy
 */
 // TODO: Add explaination for the right and wrong strategy
 function checkWinner(userInput) {
-    console.log("event listener working");
+    console.log("check winner is executed with parameter: ", userInput);
     if(winner == userInput){
         document.getElementById('canvas-content').innerHTML = `
             <p>🎉 Congratulations! You've chosen the right strategy. Your investment has grown more than the other strategy.</p>
         `;
         document.getElementById('controls').innerHTML = `
             <button  id="viewExplaination">View Explaination</button>
-            <button onclick="generateCenario()">Next Level</button>
+            <button class="generateCenario">Next Level</button>
         `;
+        document.getElementById('viewExplaination').addEventListener("click", () => {
+            startExplaination();
+        })
     }
     else{
         document.getElementById('canvas-content').innerHTML = `
@@ -101,7 +122,7 @@ function checkWinner(userInput) {
         `;
         document.getElementById('controls').innerHTML = `
             <button onclick="">View Explaination</button>
-            <button onclick="generateCenario()">Try Again</button>
+            <button class="generateCenario">Try Again</button>
         `;
     }
     
@@ -138,7 +159,7 @@ function updateWinner(){
 }
 
 function compountIntrest(principal, rate, time) {
-    n = 1;
+    let n = 1;
     return principal * (Math.pow((1 + rate / n), n*time));
 }
 
@@ -160,3 +181,5 @@ function testAccuracy() {
     console.log(`Long term wins: ${noOfLongTermWins}`);
     console.log(`Short term wins: ${noOfShortTermWins}`);
 }
+
+export {oneTImeInvestment, monthlyInvestment};

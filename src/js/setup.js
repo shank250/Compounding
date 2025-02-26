@@ -1,27 +1,52 @@
-import {main} from './main.js';
+import { oneTImeInvestment, monthlyInvestment } from "./data.js";
 
-const YEARS_COUNT = main.oneTimeInvestment.length;
-let gaps = YEARS_COUNT/10;
-const labels = [];
-for (let i = 0; i < YEARS_COUNT; i += gaps){
-  labels.push(i.toString());    
+console.log(oneTImeInvestment);
+
+function createDataForGraph(oneTImeInvestment, monthlyInvestment){
+  let YEARS_COUNT = oneTImeInvestment.length;
+  let gaps = YEARS_COUNT/10;
+  let labels = [];
+  for (let i = 0; i < YEARS_COUNT; i += gaps){
+    labels.push(i.toString());    
+  }
+  // let  data = {
+  //   labels: labels,
+  //   datasets: [
+  //     {
+  //       label: 'Monthly Investment',
+  //       data: monthlyInvestment,
+  //       borderColor: 'rgb(255, 99, 132)',
+  //       fill: false,
+  //       cubicInterpolationMode: 'monotone',
+  //       tension: 0.6
+  //     }, {
+  //       label: 'One Time Investment',
+  //       data: oneTImeInvestment,
+  //       borderColor: 'rgb(54, 162, 235)',
+  //       fill: false,
+  //       tension: 0.6
+  //     }
+  //   ]
+  // };
+  // return data;
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: 'monthlyInvestment 1',
+        data: monthlyInvestment,
+        borderColor: 'rgb(255, 99, 132)',
+        // backgroundColor: Utils.transparentize('rgb(255, 99, 132)'),
+      },
+      {
+        label: 'oneTImeInvestment 2',
+        data: oneTImeInvestment,
+        borderColor: 'rgb(54, 162, 235)',
+        // backgroundColor: Utils.transparentize('rgb(54, 162, 235)'),
+      }
+    ]
+  };
+  return data;
 }
-const data = {
-  labels: labels,
-  datasets: [
-    {
-      label: 'Monthly Investment',
-      data: main.monthyInvestment,
-      borderColor: Utils.CHART_COLORS.red,
-      fill: false,
-      cubicInterpolationMode: 'monotone',
-      tension: 0.4
-    }, {
-      label: 'One Time Investment',
-      data: main.oneTimeInvestment,
-      borderColor: Utils.CHART_COLORS.blue,
-      fill: false,
-      tension: 0.4
-    }
-  ]
-};
+
+export default createDataForGraph;
